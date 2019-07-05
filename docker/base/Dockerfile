@@ -1,7 +1,7 @@
 FROM java:8-jdk-alpine
 
 ENV DAEMON_RUN=true
-ENV SPARK_VERSION=2.4.0
+ENV SPARK_VERSION=2.4.3
 ENV HADOOP_VERSION=2.7
 ENV SCALA_VERSION=2.12.4
 ENV SCALA_HOME=/usr/share/scala
@@ -26,3 +26,13 @@ RUN apk add --no-cache python3
 RUN wget --no-verbose http://apache.mirror.iphh.net/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz && tar -xvzf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz \
       && mv spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} spark \
       && rm spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz
+
+#PySpark instalation
+RUN apk add --update \
+    python \
+    python-dev \
+    py-pip \
+    build-base \
+  && pip install virtualenv \
+  && pip install pyspark \
+  && rm -rf /var/cache/apk/*
